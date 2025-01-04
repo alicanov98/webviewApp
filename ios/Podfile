@@ -15,7 +15,9 @@ if linkage != nil
 end
 
 target 'webviewapp' do
+  use_frameworks! :linkage => :static
   config = use_native_modules!
+  pod 'RNFBFirestore', :path => '../node_modules/@react-native-firebase/firestore'
 
   use_react_native!(
     :path => config[:reactNativePath],

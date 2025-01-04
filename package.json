@@ -10,8 +10,21 @@
     "test": "jest"
   },
   "dependencies": {
+    "@notifee/react-native": "^9.1.8",
+    "@react-native-community/netinfo": "^11.4.1",
+    "@react-native-firebase/app": "^21.6.2",
+    "@react-native-firebase/firestore": "^21.6.2",
+    "@react-native-firebase/messaging": "^21.6.2",
+    "axios": "^1.7.9",
     "react": "18.3.1",
-    "react-native": "0.76.5"
+    "react-native": "0.76.5",
+    "react-native-push-notification": "^8.1.1",
+    "react-native-splash-screen": "^3.3.0",
+    "react-native-svg": "^15.10.1",
+    "react-native-svg-transformer": "^1.5.0",
+    "react-native-system-navigation-bar": "^2.6.4",
+    "react-native-webview": "^13.12.5",
+    "reactotron-react-native": "^5.1.11"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -23,7 +36,7 @@
     "@react-native/babel-preset": "0.76.5",
     "@react-native/eslint-config": "0.76.5",
     "@react-native/metro-config": "0.76.5",
-    "@react-native/typescript-config": "0.76.5",
+    "@react-native/typescript-config": "^0.76.5",
     "@types/react": "^18.2.6",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.6.3",

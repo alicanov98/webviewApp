@@ -1,118 +1,105 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useEffect, useState } from 'react';
+import Home from './src/modules/home/view/Home.tsx';
+import messaging from '@react-native-firebase/messaging';
+import useNetworkStatus from './src/hooks/useNetworkStatus.tsx';
+import { Text, View, Alert, StatusBar } from 'react-native';
+import NoConnection from './src/assets/images/icons/no-connection.svg';
+import GlobalStyles from './src/globals/styles.ts';
+import SystemNavigationBar from 'react-native-system-navigation-bar';
+import notifee, { AuthorizationStatus } from '@notifee/react-native';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+const App = () => {
+    const isConnected = useNetworkStatus();
+    const [fcm, setFcm] = useState('');
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+    async function requestUserPermission() {
+        try {
+            const settings = await notifee.requestPermission({
+                alert: true,
+                criticalAlert: true,
+                badge: true,
+                sound: true,
+                announcement: true,
+            });
+            if (settings.authorizationStatus === AuthorizationStatus.DENIED) {
+                Alert.alert('Permission Denied', 'You need to enable notifications for this app.');
+            } else if (settings.authorizationStatus === AuthorizationStatus.AUTHORIZED ||
+                settings.authorizationStatus === AuthorizationStatus.PROVISIONAL) {
+                await getFCMToken();
+            } else {
+                console.log('Notification permission has already been granted.');
+            }
+        } catch (error) {
+            console.error('Error requesting permission:', error);
+        }
+    }
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+    const getFCMToken = async () => {
+        const token = await messaging().getToken();
+        setFcm(token);
+    };
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+    const subscribeToTopic = async () => {
+        await messaging().subscribeToTopic('all');
+    };
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+    useEffect(() => {
+        (async () => {
+            await requestUserPermission();
+            await getFCMToken();
+            await subscribeToTopic();
+        })();
+    }, []);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+    useEffect(() => {
+        const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+            // Here, you can display a local notification using notifee
+            await notifee.displayNotification({
+                title: remoteMessage.notification?.title || 'New Notification',
+                body: remoteMessage.notification?.body || 'You have received a new message',
+                android: {
+                    channelId: 'default',
+                },
+                
+            });
+        });
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+        // const backgroundMessageHandler = messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+        //     console.log('Message handled in the background!', remoteMessage);
+        //     // You can also handle background messages here if needed
+        // });
+
+        return () => {
+            unsubscribe();
+        };
+    }, []);
+
+    useEffect(() => {
+        const enableFullScreen = async () => {
+            await SystemNavigationBar.leanBack(true);
+            await SystemNavigationBar.fullScreen(true);
+            await SystemNavigationBar.stickyImmersive(true);
+            await SystemNavigationBar.navigationShow();
+        };
+        enableFullScreen();
+        return () => {
+            SystemNavigationBar.leanBack(false);
+        };
+    }, []);
+console.log(fcm)
+    return isConnected ? (
+        <Home fcm={fcm} />
+    ) : (
+        <View style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: GlobalStyles.colors.PrimaryColor,
+        }}>
+            <NoConnection width={150} />
+            <Text style={{ marginBottom: 250 }}>İnternet bağlantınız yok. Lütfen yeniden deneyin !</Text>
         </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+    );
+};
 
 export default App;
