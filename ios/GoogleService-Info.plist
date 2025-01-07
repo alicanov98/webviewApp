@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDqaDV1hvMXLtLWa5tL9131k29V2FrWlmE</string>
+	<string>AIzaSyBjG6bdfO-K3HhI3VUWG_nfWenJmjrlf0A</string>
 	<key>GCM_SENDER_ID</key>
-	<string>594431713695</string>
+	<string>969055630521</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.webview.app</string>
+	<string>com.bilev.app</string>
 	<key>PROJECT_ID</key>
-	<string>webview-app-9f706</string>
+	<string>bilev-a8fbc</string>
 	<key>STORAGE_BUCKET</key>
-	<string>webview-app-9f706.firebasestorage.app</string>
+	<string>bilev-a8fbc.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:594431713695:ios:b0c8a678fcbf3e80459daa</string>
+	<string>1:969055630521:ios:9aafa642f9cef8d81d5768</string>
 </dict>
 </plist>

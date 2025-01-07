@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "594431713695",
-    "project_id": "webview-app-9f706",
-    "storage_bucket": "webview-app-9f706.firebasestorage.app"
+    "project_number": "969055630521",
+    "project_id": "bilev-a8fbc",
+    "storage_bucket": "bilev-a8fbc.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:594431713695:android:3ddcc3e80aeecf6c459daa",
+        "mobilesdk_app_id": "1:969055630521:android:1eeb1f4870f5ae9b1d5768",
         "android_client_info": {
-          "package_name": "com.webview.az"
+          "package_name": "com.bilev.az"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBH3fZG1mbMjWdDRvCGaaNuwiCrZzkOUPA"
+          "current_key": "AIzaSyDX64eckwQNslIYAdsV_JlnZyeqtdHyW4o"
         }
       ],
       "services": {
